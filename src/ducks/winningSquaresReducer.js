@@ -18,7 +18,7 @@ const winningSquaresReducer = (state = initialState, action) => {
             newState[2] = action.s3;
             return newState;
         case 'CLEAR_WINNING_SQUARES':
-            return [null, null, null];
+            return initialState;
         default:
             return state;
     }

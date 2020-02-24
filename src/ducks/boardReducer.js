@@ -17,7 +17,7 @@ const boardReducer = (state = initialState, action) => {
                 return index === action.index ? action.playerTurn : state[index];
             });
         case 'CLEAR':
-            return [null, null, null, null, null, null, null, null, null];
+            return initialState;
         default:
             return state;
         }

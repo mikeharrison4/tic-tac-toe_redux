@@ -3,20 +3,15 @@ import BoardSquare from "./BoardSquare";
 import {connect} from "react-redux";
 import Scores from "./Scores";
 import {handleClearGame} from "../thunks/handleClearGame";
+import {inPlayMessage, winningMessage} from "../ducks/messageReducer";
+import UpdateMessage from "./UpdateMessage";
 
-const Board = ({currentPlayer, board, gameFinished, winningSquares, player1, player2, handleClearGame}) => {
-
-    const name = currentPlayer === 'X'
-        ? player1 : player2;
-    const winningPlayer = gameFinished ? currentPlayer === 'X' ?
-        player2 : player1 : null;
-    const message = gameFinished ? `${winningPlayer} WINS!` :
-        `${name}'s turn to play`;
-
+const Board = ({board, gameFinished, winningSquares, handleClearGame, displayMessage}) => {
     return (
         <Fragment>
+            <UpdateMessage />
             <button
-                onClick={() => handleClearGame()}
+                onClick={handleClearGame}
                 disabled={!gameFinished}
             >
                 Clear
@@ -33,7 +28,7 @@ const Board = ({currentPlayer, board, gameFinished, winningSquares, player1, pla
                 ) )}
             </div>
             <div className='instructions'>
-                <p>{message}</p>
+                <p>{displayMessage}</p>
             </div>
             <Scores/>
         </Fragment>
@@ -42,11 +37,9 @@ const Board = ({currentPlayer, board, gameFinished, winningSquares, player1, pla
 
 const mapStateToProps = (state) => ({
     board: state.board,
-    currentPlayer: state.currentPlayer,
-    player1: state.players[0],
-    player2: state.players[1],
     winningSquares: state.winningSquares,
-    gameFinished: state.gameFinished
+    gameFinished: state.gameFinished,
+    displayMessage: state.message
 });
 
-export default connect(mapStateToProps, { handleClearGame })(Board);
+export default connect(mapStateToProps, { winningMessage, inPlayMessage, handleClearGame })(Board);
